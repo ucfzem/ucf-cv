@@ -11,6 +11,9 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);padding:12px;color:var(--text);line-height:1.5;-webkit-text-size-adjust:100%;transition:background .3s,color .3s}
 .theme-toggle{position:fixed;top:16px;right:16px;z-index:10;background:var(--card);border:1px solid var(--border);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.1);transition:background .3s}
 .cv{max-width:480px;margin:0 auto;background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.12);transition:background .3s}
+.lang-bar{display:flex;justify-content:center;gap:6px;padding:10px 16px 0;background:var(--card);transition:background .3s}
+.lang-btn{background:var(--tag-bg);border:none;border-radius:20px;padding:4px 12px;font-size:13px;cursor:pointer;color:var(--text-secondary);transition:all .2s;opacity:.5}
+.lang-btn.active{opacity:1;color:var(--accent);background:var(--accent-light);font-weight:600}
 .header{background:linear-gradient(135deg,var(--header-from),var(--header-to));color:var(--header-text);padding:28px 20px 20px;text-align:center}
 .avatar{width:90px;height:90px;border-radius:50%;border:3px solid rgba(255,255,255,.3);margin:0 auto 14px;object-fit:cover;display:block}
 .header h1{font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:2px}
@@ -39,139 +42,350 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Ar
 </head>
 <body>
 
-<button class="theme-toggle" onclick="document.body.classList.toggle('dark')" id="themeBtn">🌙</button>
+<button class="theme-toggle" id="themeBtn">🌙</button>
 
 <div class="cv">
 
+<div class="lang-bar">
+  <button class="lang-btn active" data-lang="fr">🇫🇷 FR</button>
+  <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+  <button class="lang-btn" data-lang="es">🇪🇸 ES</button>
+  <button class="lang-btn" data-lang="ar">🇲🇦 AR</button>
+</div>
+
 <div class="header">
-  <img class="avatar" src="data:image/png;base64,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" alt="Ucef Zem">
+  <img class="avatar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAAA5ZDbSAAA37klEQVR4nO2dd3yVRdbHfzNPuy09JPQmzaB0Bdsi9oJdWNeua1l1rauCrm7Eriu4llVBsa6ooIiACAJiKFJDDYSE9HaT3Nzc3PrUmXn/iPiyCMKuCep+8v0PMs+ZM3PulGfmnPMAHXTQQQcddNBBBx100EEHHXTQQQcddNBBBx100EEHHXTQQQcddNBBBx100EEHHXTwH/Ldd9+5Fy1apP3SenTQRuTmjpUbKpeebMZ3PuOYRcsdY1cBsyo2W3rdvyKBPRdNnz5d+aV1PBKQX1qBdoDWFH54fnJ6p3tl2TUuGjERiTbVxmJNMVVNzejafWBmakY3MC593RIK/j2z8+Blv7TCHRwm/rI5o6ONX36lh74WDZXzS9d89cKU3DvPGTMkG1kAUk7qi573Xj36is/enLwmWJMnhFXJrHjVJ011O44+knrW1m4aFI1UvR+PNNx+JOttE1bPeytp58p/nF68+YPLCzYvygGA2bPvdW9e8vjlWxc/fu3OtTPPfeedXFdb1lm++51B0aZFMxLNS/Sm2i9KirZ+cOd9t4zN/IlHvDdfPvzBxZ88Xe/Etgvh1DYmIuWTqwq+S29LvfZHfD9j1lYuP0uIsLD0ss2zZ0+Q2rNOua0F6uGC0RnJdLFHmFJ1bcNMADcZldHOrmHSm+np7tRgS0MsUVxwEoDtP7euglW5PTtlZd/tcms3xVtarKqqhmfyvlz5xgNTP288xKPxNz/d8vzKJVu+uOq61Q+defFF14w5/dxnegzs8ftQQ+FTadlHzwXAf65++1O/daunPlM7Pdy4sVJPTdophJQ/YcJs3p4rZZsbOBxt6t7fnS0JHkflnvphXiA7podVh7vcVACOI3xNTQ1pP6eOJZ/lZh07MPNP3mT3bZYtq/66pncWzvvmtfufnVf8n8gpiqLob68uun7xN9/NnTBxzaPjL7lo1FFHD51jJkrnhoKBv3fuMWbdz9Fzf3iSk5Hs9d1eGGZXLJ329zFZgDVxyhzRlnXsT5sbeFd5QyzQEgkokuQurTb6DD666/kNcSwr2B3+qtwTT9JcnYhLdcX/G9nzp+d6hoxMvcqX4nqIc9K1ucl8N3/99qmX3/bynp+j83e7WuZ/99j7ed8sXnHHxb+/4O4J115zaXbXzLP1yK7X6qui0/ocM7r+58jfi+ajp6qaOrZ/7wF9xk25YUtbyPwlcAPol+XFseNG9jrvrFNyjt/v7//xu+gtI0cqhXlPXtawfdr62m3PiV2rnlz6r2lXntQ26v47PmDQdRcOf/eLf01xhFMkhF1THAvtunnRopd+1jt0QcGrvlhk+wYhGkTIv/76NlL3kLTZ5L9o+l3HyYp9uyN7+1qunt9cPPGuKQerc8vy589M9UmZsuY1ZG9XRXKnbsnq/rsDTa9k6+LJZ6d3Sr9PVaUz62obKgoKyqdce/+cjwCYbaX7geiXifETfn/uY9fceO3Io485FraFr8LN/G+deg3Z9F+II5FQ/ou+ZO1uQjnCTaGXUjuNvaetdT4QbTZFh8M1o7qkK9enuDkCJGIcrNz4kV3ckWD5tCSqDnZ0GW4RA2fdJgN4bt9yxWteGp7kxUOcxybU1DdFt+2oePbjWcte/WZbc21b6fxTlDRh4TP//GrtyrxN91184Rm3X3/zVedmdj3qRD1a9lpzbfO0boNGNR2urEjzhsluD7mLOXFIMgUlVt/21H1faFsJShg2Y5DBbAvECAQOVi5lUA9ZkiAZiQiMaBC2HoSRCP4wk2xe/PjQ2k3Pz0z2WWsCTU2X5K3aPT33sffH3DJp9kNHyrj7EFxTEPjrA09/NPb6q+6a9cm777qpaH6oa7/UbxPBPb/Pzc09ZP9FmtdOdrnJE1yECeM6CBGgFF1m505Qj0QD2myKfuG+s3qoGj2LEuJWFa+cMzj7eG9Skk0kbwqUjI+Hjbv9YwC47qKhqdddfuyGztmu/o7lwJuchbjIeGrI2EmPbPziL5f26NX5vYRh+lZ+m79+xerCv72/cPfXbaXjz8UHnHLNxBPuvezK8ZecPO5cKK6kz6KR6HOpnUZs3L9s5faFaRk90x5VVH4PpQ5xGAeIBE1TYSRiRZXbthx39MmTou2tc5tN0fdP+7oawEwAmHzTcQN69JCeVyVdcftS4K+P1gD4GADCMVOybUuVqA+K1wVCOSh3tH6Atim//KI9ZY3B5XlbH3973o43AbS0lX5tQQxY9frsteuWLl878bo/5j94zbUTLuvau//5ieZN75Vt2/XCMeOuLQGA+upFY5KTkv/h0vTRDrfhMACCgggHggkIzpRQLHFEzsLb/DUJAKB6uGPxBHOcFD2uIxKI+/b+yYg69qfzC3dqCnVRBTFVVUKS5APPTr7kw7kb5q0pqHkYwJGeiv8T7JIgPnz0+blfr1y+9o4rr77sMpmq53z52cLopx/mzjzz7JNuUFXpVlVNpJhGBIRSgFIQooBABSEUEMTmhsc+Esq2i4GtKKPBFmYaepQxFpd0XeuG1vWeL95QEuuS5vlcplJZfTA60wZ2aUDPlBSt95qCmiNy8F9cXKx19iE5QQ0qhZREp6MHxQDynx44BJbm+x9bmv/q02lA5w9mP/nIyWOHrvJ5WKZtxmEbBCAyAAFKFIAQgFsQArDNuLlny6LfroHzq6qr6/yB85ltu0wLI86/+IJbl86f3v3MC2+tejV3QlbO0en3dOrWp8/O0kTzFdc/vtUESl56+k8XHjOs5ySvL3t3ZVHLQ+Mm/jnWljrVl34xxOv1nEFUebQk1/cBRFaKoBReLWpEd9YwvnsD59I3kVLP+m6juiUOV27pltnDMjt7n9Jc4nTBw8SIcxCqgkAAkgRBVIBzCGGDCAIqZOgtzaFFU/J+uwbOy6s0AGwCABeAc8e39D9mcN9HANySninRNI/o3j2TeUor9N57n+mczvr262adUe0vPXF7Uek/pk+fbrrdEZWxGKuoONV57LFTGSH/8ShD1Zapx/tSUu6hcug8lYRSqKyBSBI4ZyBUAQEFoVKOImtnWbY6KXNQWn4sXDQ9HPPN7tbt4IZesfDVzoMHd/2LS2M3uZSWVCMRh6TIoLIGIQg4HBDugBAB4TCAyKCyAjMWxcaVq4rnAOy/6Nr/mPZZg/chyUvOrCraoUT8O26sr8vP79x15MwPnrngo/IqIy1iqz/skFsiFttZUIuEQZsTsXjyJRfYn3vcSb1BfKZ8Zp0daVhcXly87tYBA8ZEDqfeFe+84xp8gjlJVe17VM1KNfUWxB1AclwgsgoqyaCSA0IIBAQEs0CpqqhyeIwsdxqj0OjtsYb1t/iyR2/dV+6ECROkFx+76PKkNPejHhcfbJkRJOIxUNUDEAmCM4BKIJIGImyAOxCCg1CORCSGzWt2IKHT/Dbu5oPSrgY+tmfPvhW1VfnBsOEv27Gpy1FK6rRQ41Y7LWvYbfuX/eeMBVOFpX8jSUpg+PEDgpGWmtFpydmZDAySE4Out/QOVtluAIc08KZN01O6aqHXXJp8pQCHbXEQKoNzBm4zyJSDyDIAAi4AoHW95EKGaSaguRphxHhIt1z/VlfBiheHZXVJetjtsy6TiE4TUQcCHCAClAgI0TooiQAIZ60bKxmglMBfUY3CzRXo0ndQjHqbvmuTDj4M2tXAt15/4h310eHvlhYVr4jEjStri771ANE3AlXL+hHPsGczMzN/6MBl+f4qAFUAMHRE9662qTPTjIMJQNUkCGYaRiJ8yGlt3Qe5yVlSZKZLZZdZlgNCCYgkQCFDURRAat3wCO6AEA1U0gBhghAXCNUggaEl2DQ9b9O6By6++O0oAGyan+vJ6Oq5zevFJI9H7+TYBphDACEAEIBKYKYJEAuS5gaoALgF1eWCbTKxY2dhS2lhVfLpF4+XGusqK2+//m/l7dXn+9NmJ1n78/ifThyYk5N91ZVXnaHU+8OfVPlbEImEUbVrldJYuuIhFlm9LFy38bwDPRsKOZQzRjizwOwEuK0DYFSS1Z88mJkwYYKU2RcveF3mZZalw3EYGOcABBxmwrF0yJRDoQC4gGAMqqzC5UmGJBNIhCEUMl6e/eWmO/cad/eaFwZ16+Od41GNF4TT0imRCMO2HUAQcOZAcNa6jhMCQimIpEChHBKhaG4Ibt+2rmBmNObUnX3FZdTtFYiFwgNXb1txcVv398FotxE8aFCfczwu1Yk4vKSgpq54eKD71px+nYYl4joaKosBO3GcJ63P541li2dpGb2eTUk5umjvs0npsouC+DRJhgIKiQAWp6S+1vrJEfzI9d1vVBTrJsPirR0OGwRuCE7hcqmIxSwrWNmyuSnY9I3DRLEgKgXxDMjISju9Z+/0nFgk/Pnu1YFJt946wwaAPd9NnaAo1jTKrO4OM0E1DWAMEiQ4lg4QAklSILgA1WSoqgzH0RGP8U3+6tB8k0menJHHTvQmu+tywVCzp7xS86Zt9Xhdd5WvWPFpn3HjDnpm31a0m4EVTRoe1R3pzDF3uwA07izx5/bqmvrxsYOy3CAMTQ0N0FoBalqs9nqlpef4QMWSfxGROSOzz8jCQHM4snVz+bcVpY2UcZGIxyzhTkrfmdP5nIO+On310a29U7KScj0ehViWCUEICAEkhYPbHI31WFhaUjf1tj9MXVuy301UJ8A3a/akPjJc5eNumGIAILvXTrlXkUNPy9TWTMsBJRSEta7VRAKYZUFWXYAAZMph6glhGq5vwo3hWdSVpHXt2+dat9c7RqIMlh4HmI2gv+E5X+chOxgzF8m9YgMBbGuv/t9LuxlYEBetq492vvPGi15/eebf/0TIgPkZXu1On0f+R9/eqT7GOQSREA75ocaDmcLw3yP7ul/jL/3iU4ekv96j7ynn/1jq2wetr2ua+05NsbolYiaEAIQQcHlUMEvhLRHrqTuvzH1qccmBrxgDQOzMid/s2PvvzV/e94hb0h+jkkO5cCApLlBJgcMcEEkAjgWJylAVBZbDRKg5tiwW5+9p7iTaqWf3a6jMTlcVizqOgCMYVBloCkbnLFhbNvOUUUmdsrPT7WSvNgK/ZQNv2lz5CRfSyLra6jNWL1o0S4jAdYR0mulw1nKGyHl1SE7nzi6PDNs0QKiEaEsd1EQwAyn+WyV399/7y5Z+StUu/8zufszWQ9X1/v+v7gOwq+KRGLiQILgAoYDbq6K5MfH6wN898RgO08dq/YJJtyV5rVxumRREgSS7QGU3bNsAlSgkQqDIFI4jCV3HMsPCe5E4jWZlZ9ykadL5ColRmxMYNgUBh6oQtDTrm2vLa+6eMmWO9eykUOyYYwbFVFXN/pldfFi0m4GfnrHky7EjB6xP8jmXb1/37eu2Hl9UVLTsloEDz/isqqal+OLzhz0/Ymivc7LS3WAOg6Jp4I5AuLEWILWpSel1N6mp/X7fXPfNHEHSX8zoMqzgYHV1z3ZN9LqkbMYYFFWBYDaIJNAScnaVlcSn4DCNu27u/We55fjzjmlKtq1AEQBzTEiyAUmWoLpkQFFgWvK6QCD2siDC6tQp6Y/duqec7tKIapoWTJOAyApABWRZIdRs7amtjl896tyn/QDQUBazhLAMAsndRl39k7TLLvrOO+/URnbp4snLL26qbwp9WVpR1bB78/Khu9cs/rIgf+Etm0rjOyZPW3Hu6++vum7Rij0bav1xQaAAhAKSCkEpYuFqhKpWJ+mN+Tc68cJvI42r/1pbW+vZv66xYyGrlJ0jSRSypMGxGKgkQ5JU1NU3v3bOH1856N30vsx67oquCk285NK4z+aAIDJsi4FSBbJE4fa4wBypwtS1WyPxpAfSO2ed1a176sfpGb5zwS3V0BMQ3AahAOEcboUi1hIvqSis+MPIUycXrljxjquycMnIGkSYJFObw2m3N5h9aZdKLj3/uB43P3hDbi/AtWlnqJoJaantCJQXrM/ctHzO9NVfvzk/HC4f8/ny0vcfnrZ87Acfrr1oyXJ7iMmmKYnPB3TnEArBBej/B6VJ2ynsOpJ0+s2xklVv7a1pfn3jt38Jh9sKyM+hXQxMhOMoisK6d+8e27s5Uzyl9zfc+rvYx8v+UtfUvHH1V2+P+WLLnhvu+7LgnmCQbI7H2UOGrbJQMAYqKUjEKBIJ6oxX5XbC5UN8Rd9e3H5uP8NH+m8p3f5eIOh/XNeC0RD6T2+BKt7C/K/fuXH2R7PO4lzwRcs/t4uBd+8uvF6WtT5HnTihV6/uWY9eMGLYtbFo4P1Ne8rvXryo5O4v1/iv3lSoLU/L8t7tVtl1hmljj8Yt00Lvnin2uIHHjhyT6nW7Mi0YSTIiQFPOJ13f/CX8K/4+9++jxh0iKkpO15F9u3W5WNNcrt31jRvzd1Tc6I8YR4CBCSFAqQsHDD3+mUsm3H5X/YYlM1+elT+PEFJPCKmnlLYYhrYBwP6vkhPibPfePcV9evUYn9mlc15GZtbxsmXUaKIZAA4EGyGkEQA0kR8bM6HXhS4A5WN1Bv7f/s0rN87ftmlLh5G7ZfH2X35KeX+Jdrvxq1ax/S/awNOnT0/u2dN3G6X0AgB9QyHzxM8+LzhpxvSVo0tKYl8FAvF1V/5+6Ps9evBb+/fN+n333pkjcrI7jXZ75FPj8YQ4qW+nZ7v3yzxPc8vrIjF+S3J6cMPEMekbkpPU8whj0B3A5VJw6rkn3HHlFV1umzKlz32yTAYRaoJz3urC5cgCmjr22SXrC/Y8eNrpT3z6wP2Pu7/84pPHvv/+64927dp+5O5NNaamnr5s2ZcHNAohZK+AP/jRn+9O7dd34PiB/ftPOHbYoCnnnnX6Cdk5OTe5XK7JhJBuAHoDwH/78705b9kH2SvKo/1X5H16xNxWP5R2MfBHH310SL5LY2Njz8rKyh5ff/lnp7bqcxmxL8a73al/Uj3a3ZKbC+PRhL54frpm2Ny+LBA0P58+c0P9P/zX/woAToM/zJxZf9i+Z1vn1f4HLQ2hHfOmvnp0XW1wf3l55M91DS2/suP/N3TxhAnS35969KpRo4ZPPu2000ZnZqX+QRDxUSjYMKGoaM3KX3w9N4Y+fc88saWlHrYDsd/8I7ZLpZSUlI6S6eLq6upeh6bD3oo3pk9PS3YrD1EpQVBKIMsS/p//Dek5QmBzJIbPFq5e+/G8pWsBNp0Q/A3fH+NfruB/GDMm/HZ8RM8e3mPPPP2kKyeOG330uBPOSksf5Eoxp73qyxzxLCb1+yXlbPvmb9NffHP6+o0b11U6jr3kdV9r/IoN/P/h0EMPkRFYk9bJ11MTQp47q4/uSUkdy5PiOL+M+X9Lx7G/ZduuvvPOdRuYoH+1/eBt6A8M80ff7ty9880P1tR+s2DBApYQ0sL6/xv9DyD4H2hMfP7k0L7jTzzu2L+cdfqoG0efdHzfHr0HX2dw/r4iZfP4L+b/8YTf98+eBT/0Ppi/Fh0G/l+iNGSPbVi6caf/7b/e/NhZ/1576f/ZDwX+3+l/AJeU/AmAAFKc7JCffrpp+z7fN/bp5G7dLqqoqHh6165dd3/44VeHlE70+OOPL8zO7lJQWFj4ypIlS75sY1UOGzqM/Mvo069fX/JL65Cbm0t+cR3+1+kw8H+B/gemiM2LqB5T1gAAAABJRU5ErkJggg==" alt="Ucef Zem">
   <h1>Ucef Zem</h1>
   <div class="subtitle">Graphic Designer & Web Developer</div>
-  <div class="badge">✦ 28 years of experience</div>
+  <div class="badge" data-i18n="badge">✦ 28 years of experience</div>
   <div class="contact">
     <span>✉ azer.tyu199p@gmail.com</span>
-    <span>📍 Tanger, Maroc</span>
-    <span>🌐 Disponible en freelance</span>
+    <span data-i18n="location">📍 Tanger, Maroc</span>
+    <span data-i18n="available">🌐 Disponible en freelance</span>
   </div>
 </div>
 
 <div class="section">
-  <div class="section-title">Profil</div>
-  <div class="profile-text">
+  <div class="section-title" data-i18n="s1">Profil</div>
+  <div class="profile-text" data-i18n="profile">
     Designer graphique et développeur web avec 28 years of experience au sein d'agences de communication et en freelance. Expertise en identité visuelle, mise en page print, développement de sites web et intégration CMS. Passionné par la création digitale, je combine rigueur technique et sensibilité artistique pour livrer des projets impactants.
   </div>
 </div>
 
 <div class="section">
-  <div class="section-title">Expérience</div>
+  <div class="section-title" data-i18n="s2">Expérience</div>
 
   <div class="item">
     <div class="item-header">Graphic Designer & Web Developer</div>
-    <div class="item-sub">Freelance — En cours (4 ans)</div>
+    <div class="item-sub" data-i18n="j1sub">Freelance — En cours (4 ans)</div>
     <ul class="item-desc">
-      <li>Conception d'identités visuelles, logos et chartes graphiques</li>
-      <li>Développement de sites web vitrine et e-commerce (WordPress, HTML/CSS)</li>
-      <li>Création de supports print : flyers, affiches, brochures</li>
-      <li>Gestion autonome de projets de A à Z</li>
+      <li data-i18n="j1l1">Conception d'identités visuelles, logos et chartes graphiques</li>
+      <li data-i18n="j1l2">Développement de sites web vitrine et e-commerce (WordPress, HTML/CSS)</li>
+      <li data-i18n="j1l3">Création de supports print : flyers, affiches, brochures</li>
+      <li data-i18n="j1l4">Gestion autonome de projets de A à Z</li>
     </ul>
   </div>
 
   <div class="item">
     <div class="item-header">Graphic Designer & Web Developer</div>
-    <div class="item-sub">Vital Communication — 3 ans</div>
+    <div class="item-sub" data-i18n="j2sub">Vital Communication — 3 ans</div>
     <ul class="item-desc">
-      <li>Contenus graphiques pour campagnes print et digitales</li>
-      <li>Développement et maintenance de sites web clients</li>
-      <li>Coordination avec équipes créatives et commerciaux</li>
+      <li data-i18n="j2l1">Contenus graphiques pour campagnes print et digitales</li>
+      <li data-i18n="j2l2">Développement et maintenance de sites web clients</li>
+      <li data-i18n="j2l3">Coordination avec équipes créatives et commerciaux</li>
     </ul>
   </div>
 
   <div class="item">
     <div class="item-header">Web Developer & Designer</div>
-    <div class="item-sub">Detroit Dot Com — 2 ans</div>
+    <div class="item-sub" data-i18n="j3sub">Detroit Dot Com — 2 ans</div>
     <ul class="item-desc">
-      <li>Développement front-end de sites web pour PME</li>
-      <li>Intégration web et optimisation UX/UI</li>
-      <li>Création de maquettes et prototypes visuels</li>
+      <li data-i18n="j3l1">Développement front-end de sites web pour PME</li>
+      <li data-i18n="j3l2">Intégration web et optimisation UX/UI</li>
+      <li data-i18n="j3l3">Création de maquettes et prototypes visuels</li>
     </ul>
   </div>
 
   <div class="item">
     <div class="item-header">Graphic Designer & Prépresse</div>
-    <div class="item-sub">Detroit Flashage — 4 ans</div>
+    <div class="item-sub" data-i18n="j4sub">Detroit Flashage — 4 ans</div>
     <ul class="item-desc">
-      <li>Préparation de fichiers prépresse pour impression offset et numérique</li>
-      <li>Création graphique de supports marketing et publicitaires</li>
-      <li>Contrôle qualité des productions avant impression</li>
+      <li data-i18n="j4l1">Préparation de fichiers prépresse pour impression offset et numérique</li>
+      <li data-i18n="j4l2">Création graphique de supports marketing et publicitaires</li>
+      <li data-i18n="j4l3">Contrôle qualité des productions avant impression</li>
     </ul>
   </div>
 
   <div class="item">
     <div class="item-header">Graphic Designer</div>
-    <div class="item-sub">Ashrq Com — 5 ans</div>
+    <div class="item-sub" data-i18n="j5sub">Ashrq Com — 5 ans</div>
     <ul class="item-desc">
-      <li>Design de publications print et digitales pour clients arabophones</li>
-      <li>Conception de logos, affiches et supports de communication</li>
-      <li>Collaboration avec rédacteurs et photographes</li>
+      <li data-i18n="j5l1">Design de publications print et digitales pour clients arabophones</li>
+      <li data-i18n="j5l2">Conception de logos, affiches et supports de communication</li>
+      <li data-i18n="j5l3">Collaboration avec rédacteurs et photographes</li>
     </ul>
   </div>
 
   <div class="item">
     <div class="item-header">Graphic Designer</div>
-    <div class="item-sub">Neon Design — 3 ans</div>
+    <div class="item-sub" data-i18n="j6sub">Neon Design — 3 ans</div>
     <ul class="item-desc">
-      <li>Création graphique variée : identités de marque, packagings, signalétique</li>
-      <li>Maîtrise des outils Adobe en environnement studio créatif</li>
-      <li>Prise en charge de projets clients en autonomie</li>
+      <li data-i18n="j6l1">Création graphique variée : identités de marque, packagings, signalétique</li>
+      <li data-i18n="j6l2">Maîtrise des outils Adobe en environnement studio créatif</li>
+      <li data-i18n="j6l3">Prise en charge de projets clients en autonomie</li>
     </ul>
   </div>
 </div>
 
 <div class="section">
-  <div class="section-title">Compétences</div>
+  <div class="section-title" data-i18n="s3">Compétences</div>
   <div class="skills-grid">
     <div>Adobe Photoshop</div>
     <div>HTML5 / CSS3</div>
     <div>Adobe Illustrator</div>
     <div>OpenCode</div>
     <div>Adobe InDesign</div>
-    <div>Prépresse & Print</div>
+    <div data-i18n="sk1">Prépresse & Print</div>
     <div>Adobe Flash / Animate</div>
     <div>UI/UX Design</div>
     <div>WordPress</div>
-    <div>Identité visuelle</div>
+    <div data-i18n="sk2">Identité visuelle</div>
   </div>
 </div>
 
 <div class="section">
-  <div class="section-title">Langues</div>
+  <div class="section-title" data-i18n="s4">Langues</div>
   <div class="lang-list">
-    <span class="lang-tag">🇲🇦 <strong>Arabe</strong> — natif</span>
-    <span class="lang-tag">🇫🇷 <strong>Français</strong> — courant</span>
-    <span class="lang-tag">🇬🇧 <strong>Anglais</strong> — intermédiaire</span>
-    <span class="lang-tag">🇪🇸 <strong>Espagnol</strong> — notions</span>
+    <span class="lang-tag">🇲🇦 <strong data-i18n="la1">Arabe</strong> <span data-i18n="ln1">— natif</span></span>
+    <span class="lang-tag">🇫🇷 <strong data-i18n="la2">Français</strong> <span data-i18n="ln2">— courant</span></span>
+    <span class="lang-tag">🇬🇧 <strong data-i18n="la3">Anglais</strong> <span data-i18n="ln3">— intermédiaire</span></span>
+    <span class="lang-tag">🇪🇸 <strong data-i18n="la4">Espagnol</strong> <span data-i18n="ln4">— notions</span></span>
   </div>
 </div>
 
 <div class="section">
-  <div class="section-title">Formation</div>
+  <div class="section-title" data-i18n="s5">Formation</div>
   <div class="item">
-    <div class="item-header">Formation en Création de Pages Web</div>
-    <div class="item-sub">Cours en ligne (récent)</div>
-    <div class="profile-text" style="padding:4px 0 0">Formation continue en développement web et nouvelles technologies digitales.</div>
+    <div class="item-header" data-i18n="e1h">Formation en Création de Pages Web</div>
+    <div class="item-sub" data-i18n="e1sub">Cours en ligne (récent)</div>
+    <div class="profile-text" style="padding:4px 0 0" data-i18n="e1d">Formation continue en développement web et nouvelles technologies digitales.</div>
   </div>
 </div>
 
-<div class="footer">CV — Ucef Zem</div>
+<div class="footer" data-i18n="footer">CV — Ucef Zem</div>
 
 </div>
 
 <script>
-const btn = document.getElementById('themeBtn');
-btn.onclick = () => {
-  document.body.classList.toggle('dark');
-  btn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+const lang = {
+  fr: {
+    badge: "✦ 28 ans d'expérience",
+    location: "📍 Tanger, Maroc",
+    available: "🌐 Disponible en freelance",
+    s1: "Profil",
+    profile: "Designer graphique et développeur web avec 28 ans d'expérience au sein d'agences de communication et en freelance. Expertise en identité visuelle, mise en page print, développement de sites web et intégration CMS. Passionné par la création digitale, je combine rigueur technique et sensibilité artistique pour livrer des projets impactants.",
+    s2: "Expérience",
+    j1sub: "Freelance — En cours (4 ans)",
+    j1l1: "Conception d'identités visuelles, logos et chartes graphiques",
+    j1l2: "Développement de sites web vitrine et e-commerce (WordPress, HTML/CSS)",
+    j1l3: "Création de supports print : flyers, affiches, brochures",
+    j1l4: "Gestion autonome de projets de A à Z",
+    j2sub: "Vital Communication — 3 ans",
+    j2l1: "Contenus graphiques pour campagnes print et digitales",
+    j2l2: "Développement et maintenance de sites web clients",
+    j2l3: "Coordination avec équipes créatives et commerciaux",
+    j3sub: "Detroit Dot Com — 2 ans",
+    j3l1: "Développement front-end de sites web pour PME",
+    j3l2: "Intégration web et optimisation UX/UI",
+    j3l3: "Création de maquettes et prototypes visuels",
+    j4sub: "Detroit Flashage — 4 ans",
+    j4l1: "Préparation de fichiers prépresse pour impression offset et numérique",
+    j4l2: "Création graphique de supports marketing et publicitaires",
+    j4l3: "Contrôle qualité des productions avant impression",
+    j5sub: "Ashrq Com — 5 ans",
+    j5l1: "Design de publications print et digitales pour clients arabophones",
+    j5l2: "Conception de logos, affiches et supports de communication",
+    j5l3: "Collaboration avec rédacteurs et photographes",
+    j6sub: "Neon Design — 3 ans",
+    j6l1: "Création graphique variée : identités de marque, packagings, signalétique",
+    j6l2: "Maîtrise des outils Adobe en environnement studio créatif",
+    j6l3: "Prise en charge de projets clients en autonomie",
+    s3: "Compétences",
+    sk1: "Prépresse & Print",
+    sk2: "Identité visuelle",
+    s4: "Langues",
+    la1: "Arabe", ln1: "— natif",
+    la2: "Français", ln2: "— courant",
+    la3: "Anglais", ln3: "— intermédiaire",
+    la4: "Espagnol", ln4: "— notions",
+    s5: "Formation",
+    e1h: "Formation en Création de Pages Web",
+    e1sub: "Cours en ligne (récent)",
+    e1d: "Formation continue en développement web et nouvelles technologies digitales.",
+    footer: "CV — Ucef Zem"
+  },
+  en: {
+    badge: "✦ 28 years of experience",
+    location: "📍 Tangier, Morocco",
+    available: "🌐 Available for freelance",
+    s1: "Profile",
+    profile: "Graphic designer and web developer with 28 years of experience in communication agencies and freelance. Expertise in visual identity, print layout, web development and CMS integration. Passionate about digital creation, I combine technical rigor and artistic sensitivity to deliver impactful projects.",
+    s2: "Experience",
+    j1sub: "Freelance — Current (4 years)",
+    j1l1: "Visual identity, logo and brand guidelines design",
+    j1l2: "Website and e-commerce development (WordPress, HTML/CSS)",
+    j1l3: "Print design: flyers, posters, brochures",
+    j1l4: "End-to-end autonomous project management",
+    j2sub: "Vital Communication — 3 years",
+    j2l1: "Graphic content for print and digital campaigns",
+    j2l2: "Client website development and maintenance",
+    j2l3: "Coordination with creative teams and sales",
+    j3sub: "Detroit Dot Com — 2 years",
+    j3l1: "Front-end web development for SMBs",
+    j3l2: "Web integration and UX/UI optimization",
+    j3l3: "Mockup and visual prototype creation",
+    j4sub: "Detroit Flashage — 4 years",
+    j4l1: "Prepress file preparation for offset and digital printing",
+    j4l2: "Graphic design for marketing and advertising materials",
+    j4l3: "Quality control before printing",
+    j5sub: "Ashrq Com — 5 years",
+    j5l1: "Print and digital publication design for Arabic-speaking clients",
+    j5l2: "Logo, poster and communication material design",
+    j5l3: "Collaboration with writers and photographers",
+    j6sub: "Neon Design — 3 years",
+    j6l1: "Varied graphic creation: brand identities, packaging, signage",
+    j6l2: "Adobe tools mastery in a creative studio environment",
+    j6l3: "Autonomous client project management",
+    s3: "Skills",
+    sk1: "Prepress & Print",
+    sk2: "Visual Identity",
+    s4: "Languages",
+    la1: "Arabic", ln1: "— native",
+    la2: "French", ln2: "— fluent",
+    la3: "English", ln3: "— intermediate",
+    la4: "Spanish", ln4: "— basic",
+    s5: "Education",
+    e1h: "Web Page Creation Training",
+    e1sub: "Online course (recent)",
+    e1d: "Continuing education in web development and new digital technologies.",
+    footer: "CV — Ucef Zem"
+  },
+  es: {
+    badge: "✦ 28 años de experiencia",
+    location: "📍 Tánger, Marruecos",
+    available: "🌐 Disponible para freelance",
+    s1: "Perfil",
+    profile: "Diseñador gráfico y desarrollador web con 28 años de experiencia en agencias de comunicación y freelance. Experto en identidad visual, maquetación impresa, desarrollo web e integración de CMS. Apasionado por la creación digital, combino rigor técnico y sensibilidad artística para entregar proyectos impactantes.",
+    s2: "Experiencia",
+    j1sub: "Freelance — Actual (4 años)",
+    j1l1: "Diseño de identidades visuales, logotipos y manuales de marca",
+    j1l2: "Desarrollo de sitios web y comercio electrónico (WordPress, HTML/CSS)",
+    j1l3: "Creación de materiales impresos: flyers, carteles, folletos",
+    j1l4: "Gestión autónoma de proyectos de principio a fin",
+    j2sub: "Vital Communication — 3 años",
+    j2l1: "Contenidos gráficos para campañas impresas y digitales",
+    j2l2: "Desarrollo y mantenimiento de sitios web de clientes",
+    j2l3: "Coordinación con equipos creativos y comerciales",
+    j3sub: "Detroit Dot Com — 2 años",
+    j3l1: "Desarrollo front-end de sitios web para PYMES",
+    j3l2: "Integración web y optimización UX/UI",
+    j3l3: "Creación de maquetas y prototipos visuales",
+    j4sub: "Detroit Flashage — 4 años",
+    j4l1: "Preparación de archivos de preprensa para impresión offset y digital",
+    j4l2: "Diseño gráfico de materiales de marketing y publicidad",
+    j4l3: "Control de calidad antes de la impresión",
+    j5sub: "Ashrq Com — 5 años",
+    j5l1: "Diseño de publicaciones impresas y digitales para clientes araboparlantes",
+    j5l2: "Diseño de logotipos, carteles y materiales de comunicación",
+    j5l3: "Colaboración con redactores y fotógrafos",
+    j6sub: "Neon Design — 3 años",
+    j6l1: "Creación gráfica variada: identidades de marca, packaging, señalética",
+    j6l2: "Dominio de herramientas Adobe en entorno de estudio creativo",
+    j6l3: "Gestión autónoma de proyectos de clientes",
+    s3: "Habilidades",
+    sk1: "Preprensa & Impresión",
+    sk2: "Identidad Visual",
+    s4: "Idiomas",
+    la1: "Árabe", ln1: "— nativo",
+    la2: "Francés", ln2: "— fluido",
+    la3: "Inglés", ln3: "— intermedio",
+    la4: "Español", ln4: "— básico",
+    s5: "Formación",
+    e1h: "Formación en Creación de Páginas Web",
+    e1sub: "Curso en línea (reciente)",
+    e1d: "Formación continua en desarrollo web y nuevas tecnologías digitales.",
+    footer: "CV — Ucef Zem"
+  },
+  ar: {
+    badge: "✦ 28 عامًا من الخبرة",
+    location: "📍 طنجة، المغرب",
+    available: "🌐 متاح للعمل الحر",
+    s1: "الملف الشخصي",
+    profile: "مصمم جرافيك ومطور ويب بخبرة 28 عامًا في وكالات الاتصال والعمل الحر. خبرة في الهوية البصرية، تنسيق الطباعة، تطوير الويب ودمج أنظمة إدارة المحتوى. شغوف بالإبداع الرقمي، أجمع بين الدقة التقنية والحساسية الفنية لتقديم مشاريع مؤثرة.",
+    s2: "الخبرة",
+    j1sub: "العمل الحر — الحالي (4 سنوات)",
+    j1l1: "تصميم الهويات البصرية والشعارات ودليل العلامة التجارية",
+    j1l2: "تطوير مواقع الويب والتجارة الإلكترونية (WordPress, HTML/CSS)",
+    j1l3: "تصميم المطبوعات: منشورات، ملصقات، كتيبات",
+    j1l4: "إدارة المشاريع بشكل مستقل من الألف إلى الياء",
+    j2sub: "فيتال كوميونيكيشن — 3 سنوات",
+    j2l1: "محتويات جرافيكية للحملات المطبوعة والرقمية",
+    j2l2: "تطوير وصيانة مواقع الويب للعملاء",
+    j2l3: "التنسيق مع الفرق الإبداعية والتجارية",
+    j3sub: "ديترويت دوت كوم — سنتان",
+    j3l1: "تطوير الواجهة الأمامية لمواقع الشركات الصغيرة والمتوسطة",
+    j3l2: "دمج الويب وتحسين تجربة المستخدم",
+    j3l3: "إنشاء النماذج والنماذج الأولية البصرية",
+    j4sub: "ديترويت فلاشاج — 4 سنوات",
+    j4l1: "تحضير ملفات ما قبل الطباعة للطباعة الأوفست والرقمية",
+    j4l2: "تصميم جرافيك للمواد التسويقية والإعلانية",
+    j4l3: "مراقبة الجودة قبل الطباعة",
+    j5sub: "أش رق كوم — 5 سنوات",
+    j5l1: "تصميم المطبوعات والمنشورات الرقمية للعملاء الناطقين بالعربية",
+    j5l2: "تصميم الشعارات والملصقات ومواد الاتصال",
+    j5l3: "التعاون مع الكتاب والمصورين",
+    j6sub: "نيون ديزاين — 3 سنوات",
+    j6l1: "إبداع جرافيكي متنوع: هويات العلامات التجارية، التغليف، اللافتات",
+    j6l2: "إتقان أدوات أدوبي في بيئة استوديو إبداعي",
+    j6l3: "إدارة مشاريع العملاء بشكل مستقل",
+    s3: "المهارات",
+    sk1: "ما قبل الطباعة والطباعة",
+    sk2: "الهوية البصرية",
+    s4: "اللغات",
+    la1: "العربية", ln1: "— اللغة الأم",
+    la2: "الفرنسية", ln2: "— بطلاقة",
+    la3: "الإنجليزية", ln3: "— متوسط",
+    la4: "الإسبانية", ln4: "— أساسي",
+    s5: "التعليم",
+    e1h: "تدريب في إنشاء صفحات الويب",
+    e1sub: "دورة عبر الإنترنت (حديثة)",
+    e1d: "تعليم مستمر في تطوير الويب والتقنيات الرقمية الجديدة.",
+    footer: "السيرة الذاتية — Ucef Zem"
+  }
 };
+
+const themeBtn = document.getElementById('themeBtn');
+themeBtn.onclick = () => {
+  document.body.classList.toggle('dark');
+  themeBtn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+};
+
+const rtlLangs = { ar: true };
+
+function switchLang(code) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === code));
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (lang[code][key]) el.textContent = lang[code][key];
+  });
+  document.querySelector('.cv').style.direction = rtlLangs[code] ? 'rtl' : 'ltr';
+}
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.onclick = () => switchLang(btn.dataset.lang);
+});
+
+switchLang('fr');
 </script>
 
 </body>
