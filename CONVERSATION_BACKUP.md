@@ -7,7 +7,7 @@
 
 ## Task History
 
-### 1. Avatar Update
+### 1. Avatar Update (v1)
 - Replaced inline base64 avatar with `avatar.jpeg`
 - Downloaded from Droppy share (768×768 square JPEG)
 - Commit: `03879a0`
@@ -37,10 +37,14 @@
 - Commits: `eda08a6`, `416d5a5`
 
 ### 6. Cloudflare Pages Fix
-- Cloudflare REST API produced 500 errors on every deploy
-- Switched to official `wrangler` CLI
-- Created fresh project + deployed successfully
-- Now serving HTTP 200 at https://ucf-cv.pages.dev
+- Cloudflare REST API produced 500 errors
+- Switched to official `wrangler` CLI — now working HTTP 200
+
+### 7. Avatar Update (v2)
+- Replaced `avatar.jpeg` with new photo as `avatar.png` (768×768 PNG, 1.1MB)
+- Updated HTML reference to `avatar.png`
+- Deployed to all 3 platforms
+- Commit: `7a25bf3`
 
 ---
 
@@ -60,7 +64,7 @@
 - **Experience**: 30 years
 - **Title**: Graphic Designer & Web Developer (FR/EN/ES) / مصمم جرافيك ومطور ويب (AR)
 - **Fonts**: Default system font (LTR) + Cairo Play (RTL/Arabic)
-- **Avatar**: avatar.jpeg (768×768)
+- **Avatar**: avatar.png (768×768), referenced via `<img src="avatar.png">`
 - **Languages**: FR, EN, ES, AR (with RTL support)
 
 ---
@@ -68,7 +72,7 @@
 ## Full Commit History (this session)
 | Commit | Description |
 |--------|-------------|
-| `03879a0` | Update avatar image |
+| `03879a0` | Update avatar image (v1) |
 | `04f725e` | Add conversation backup log |
 | `8616997` | Update name, age 58, 30 years experience |
 | `519b798` | Add Arabic name translation يوسف الزموري |
@@ -77,6 +81,8 @@
 | `eda08a6` | Add Cairo Play Google Font |
 | `416d5a5` | Fix Cairo Play font override |
 | `6afc416` | Update full conversation backup |
+| `6ff9607` | Final backup: all platforms live |
+| `7a25bf3` | Update avatar to new photo (PNG) |
 
 ---
 
