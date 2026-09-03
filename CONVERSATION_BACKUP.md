@@ -17,7 +17,7 @@
 - Arabic name: "يوسف الزموري"
 - Added age badge: 🎂 58 ans (all languages)
 - Experience updated: 28 → 30 years
-- Commit: `8616997`, `519b798`
+- Commits: `8616997`, `519b798`
 
 ### 3. Responsive Redesign
 - Mobile-first CSS with 4 breakpoints (0-600, 601-1024, 1025-1440, 1441+)
@@ -25,7 +25,7 @@
 - Avatar: 90px (mobile) → 180px (TV)
 - Skills grid: 2 → 5 columns
 - Removed `user-scalable=no` (accessibility)
-- Commit: `8553308`, `2e999c0`
+- Commits: `8553308`, `2e999c0`
 
 ### 4. Arabic Subtitle Fix
 - Added `data-i18n="subtitle"` translation key
@@ -36,23 +36,21 @@
 - `html[dir='rtl'] * { font-family: 'Cairo Play' !important }`
 - Commits: `eda08a6`, `416d5a5`
 
+### 6. Cloudflare Pages Fix
+- Cloudflare REST API produced 500 errors on every deploy
+- Switched to official `wrangler` CLI
+- Created fresh project + deployed successfully
+- Now serving HTTP 200 at https://ucf-cv.pages.dev
+
 ---
 
-## Deployments
+## Final Live Status (ALL WORKING)
 
 | Platform | URL | Status |
 |----------|-----|--------|
-| GitHub Pages | https://ucfzem.github.io/ucf-cv/ | ✅ Live |
-| Vercel | https://ucf-cv-ucfzem-s-projects.vercel.app | ✅ Live |
-| Cloudflare Pages | https://ucf-cv.pages.dev | ⚠️ 500 error (CF account issue) |
-
-### Vercel Deployment IDs
-- `dpl_AFfdZcwfeh4k5W5zGsNPrUWqhy69` (avatar update)
-- Latest: responsive + font deploys
-
-### Cloudflare Deployment IDs
-- `a977b3be`, `141716c1`, `eda3f334`, `4f320c51`, `c194133e`, `5c132ec1`, `bb3c6df3`, `18484daa`
-- **Issue**: Cloudflare Pages API returns 500/404 on every deploy despite "success" status — appears to be CF account configuration problem
+| **GitHub Pages** | https://ucfzem.github.io/ucf-cv/ | ✅ HTTP 200 |
+| **Vercel** | https://ucf-cv-ucfzem-s-projects.vercel.app | ✅ HTTP 200 |
+| **Cloudflare Pages** | https://ucf-cv.pages.dev | ✅ HTTP 200 |
 
 ---
 
@@ -67,7 +65,21 @@
 
 ---
 
-## Tokens Used (REVOKE THESE if needed)
-- GitHub PAT: `ghp_***REDACTED***`
-- Vercel: `vcp_***REDACTED***`
-- Cloudflare: `cfut_***REDACTED***`
+## Full Commit History (this session)
+| Commit | Description |
+|--------|-------------|
+| `03879a0` | Update avatar image |
+| `04f725e` | Add conversation backup log |
+| `8616997` | Update name, age 58, 30 years experience |
+| `519b798` | Add Arabic name translation يوسف الزموري |
+| `8553308` | Full responsive redesign + Arabic subtitle |
+| `2e999c0` | Responsive redesign update log |
+| `eda08a6` | Add Cairo Play Google Font |
+| `416d5a5` | Fix Cairo Play font override |
+| `6afc416` | Update full conversation backup |
+
+---
+
+## Security Notes
+- All API tokens (GitHub, Vercel, Cloudflare) were redacted from this file
+- Tokens were flagged by GitHub secret scanner — **should be revoked/recreated**
