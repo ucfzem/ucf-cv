@@ -55,7 +55,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Ar
 
 <div class="header">
   <img class="avatar" src="avatar.jpeg" alt="Youssef Zemmouri">
-  <h1>Youssef Zemmouri</h1>
+  <h1 data-i18n="name">Youssef Zemmouri</h1>
   <div class="subtitle">Graphic Designer & Web Developer</div>
   <div class="badge" data-i18n="badge">✦ 30 years of experience</div>
   <div class="contact">
@@ -180,6 +180,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Ar
 <script>
 const lang = {
   fr: {
+    name: "Youssef Zemmouri",
     badge: "✦ 30 ans d'expérience",
     age: "🎂 58 ans",
     location: "📍 Tanger, Maroc",
@@ -238,6 +239,7 @@ const lang = {
     footer: "CV — Youssef Zemmouri"
   },
   en: {
+    name: "Youssef Zemmouri",
     badge: "✦ 30 years of experience",
     age: "🎂 58 years old",
     location: "📍 Tangier, Morocco",
@@ -296,6 +298,7 @@ const lang = {
     footer: "CV — Youssef Zemmouri"
   },
   es: {
+    name: "Youssef Zemmouri",
     badge: "✦ 30 años de experiencia",
     age: "🎂 58 años",
     location: "📍 Tánger, Marruecos",
@@ -354,6 +357,7 @@ const lang = {
     footer: "CV — Youssef Zemmouri"
   },
   ar: {
+    name: "يوسف الزموري",
     badge: "✦ 30 عامًا من الخبرة",
     age: "🎂 58 سنة",
     location: "📍 طنجة، المغرب",
@@ -429,6 +433,7 @@ function switchLang(code) {
   });
   document.documentElement.lang = code;
   document.documentElement.dir = rtlLangs[code] ? 'rtl' : 'ltr';
+    document.title = 'CV — ' + lang[code].name;
 }
 
 document.querySelectorAll('.lang-btn').forEach(btn => {
