@@ -1,78 +1,73 @@
-# Avatar Update — Conversation Log
+# Full Conversation Log — ucf-cv Site
 
-**Date**: September 3, 2026  
-**Repo**: https://github.com/ucfzem/ucf-cv
-
----
-
-## Summary
-
-Replaced the inline base64 avatar with a separate `avatar.jpeg` file and deployed the updated site to GitHub Pages, Vercel, and Cloudflare Pages.
+**Repo**: https://github.com/ucfzem/ucf-cv  
+**Last Updated**: September 3, 2026
 
 ---
 
-## What Changed
+## Task History
 
-### Files
-- **`avatar.jpeg`** — New 768×768 JPEG avatar image (118KB), downloaded from Droppy share
-- **`index.html`** — Line 57: replaced `src="data:image/png;base64,..."` with `src="avatar.jpeg"`
+### 1. Avatar Update
+- Replaced inline base64 avatar with `avatar.jpeg`
+- Downloaded from Droppy share (768×768 square JPEG)
+- Commit: `03879a0`
 
-### CSS (unchanged)
-```css
-.avatar {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  border: 3px solid rgba(255,255,255,.3);
-  margin: 0 auto 14px;
-  object-fit: cover;
-  display: block;
-}
-```
+### 2. Name Change
+- "Ucef Zem" → "Youssef Zemmouri"
+- Arabic name: "يوسف الزموري"
+- Added age badge: 🎂 58 ans (all languages)
+- Experience updated: 28 → 30 years
+- Commit: `8616997`, `519b798`
+
+### 3. Responsive Redesign
+- Mobile-first CSS with 4 breakpoints (0-600, 601-1024, 1025-1440, 1441+)
+- `clamp()` typography for smooth scaling
+- Avatar: 90px (mobile) → 180px (TV)
+- Skills grid: 2 → 5 columns
+- Removed `user-scalable=no` (accessibility)
+- Commit: `8553308`, `2e999c0`
+
+### 4. Arabic Subtitle Fix
+- Added `data-i18n="subtitle"` translation key
+- Arabic subtitle: "مصمم جرافيك ومطور ويب"
+
+### 5. Cairo Play Arabic Font
+- Added Google Fonts preconnect + stylesheet
+- `html[dir='rtl'] * { font-family: 'Cairo Play' !important }`
+- Commits: `eda08a6`, `416d5a5`
 
 ---
 
 ## Deployments
 
-### GitHub Pages
-- **URL**: https://ucfzem.github.io/ucf-cv/
-- **Commit**: `03879a0` — "Update avatar image"
-- **Auto-deploys** on push to `main`
+| Platform | URL | Status |
+|----------|-----|--------|
+| GitHub Pages | https://ucfzem.github.io/ucf-cv/ | ✅ Live |
+| Vercel | https://ucf-cv-ucfzem-s-projects.vercel.app | ✅ Live |
+| Cloudflare Pages | https://ucf-cv.pages.dev | ⚠️ 500 error (CF account issue) |
 
-### Vercel
-- **URL**: https://ucf-cv-ucfzem-s-projects.vercel.app
-- **Deployment ID**: `dpl_AFfdZcwfeh4k5W5zGsNPrUWqhy69`
-- **Status**: INITIALIZING → READY
+### Vercel Deployment IDs
+- `dpl_AFfdZcwfeh4k5W5zGsNPrUWqhy69` (avatar update)
+- Latest: responsive + font deploys
 
-### Cloudflare Pages
-- **URL**: https://ucf-cv.pages.dev
-- **Deployment ID**: `a977b3be-b805-4d9f-8909-ba23fa541cc2`
-- **Status**: Queued → deploying
-
----
-
-## Technical Notes
-
-### Original avatar
-- Was a base64-encoded PNG embedded inline in `index.html` (line 57)
-- Made the HTML file unnecessarily large
-
-### New approach
-- Avatar saved as separate `avatar.jpeg` file
-- Referenced via relative path `<img src="avatar.jpeg">`
-- Image is square (768×768), which is ideal for the 90×90 circular crop
-
-### Cache busting
-- Not needed for base64 → file switch (entire HTML changes)
-- If replacing the avatar file in the future, use `src="avatar.jpeg?v=2"` to bust cache
-
-### Image sizing
-- CSS uses `object-fit: cover` on 90×90 circle — any square image works
-- Source image: 768×768 JPEG (downscaled by CSS)
+### Cloudflare Deployment IDs
+- `a977b3be`, `141716c1`, `eda3f334`, `4f320c51`, `c194133e`, `5c132ec1`, `bb3c6df3`, `18484daa`
+- **Issue**: Cloudflare Pages API returns 500/404 on every deploy despite "success" status — appears to be CF account configuration problem
 
 ---
 
-## Tokens Used (DO NOT SHARE)
-- GitHub PAT: `ghp_***` (used for git push, now revoked)
-- Vercel Token: `vcp_***` (used for API deployment)
-- Cloudflare Token: `cfut_***` (used for Pages API deployment)
+## Current Site Content
+- **Name**: Youssef Zemmouri / يوسف الزموري
+- **Age**: 58
+- **Experience**: 30 years
+- **Title**: Graphic Designer & Web Developer (FR/EN/ES) / مصمم جرافيك ومطور ويب (AR)
+- **Fonts**: Default system font (LTR) + Cairo Play (RTL/Arabic)
+- **Avatar**: avatar.jpeg (768×768)
+- **Languages**: FR, EN, ES, AR (with RTL support)
+
+---
+
+## Tokens Used (REVOKE THESE if needed)
+- GitHub PAT: `ghp_***REDACTED***`
+- Vercel: `vcp_***REDACTED***`
+- Cloudflare: `cfut_***REDACTED***`
